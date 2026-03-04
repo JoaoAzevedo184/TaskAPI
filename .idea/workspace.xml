@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="0db071a7-e7b6-4ee1-9eeb-f84dcc02dcc5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/TaskAPI.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="0db071a7-e7b6-4ee1-9eeb-f84dcc02dcc5" name="Changes" comment="add CI/CD pipeline configuration and Docker setup">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +25,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "JoaoAzevedo184"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/JoaoAzevedo184/TaskAPI.git",
+    "accountId": "97e7af2c-84b9-4dc2-854e-e00b6b802a0b"
+  }
+}]]></component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 8
 }]]></component>
@@ -57,7 +71,58 @@
       <option name="presentableId" value="Default" />
       <updated>1772585069944</updated>
     </task>
+    <task id="LOCAL-00001" summary="add initial project configuration files for TaskAPI module">
+      <option name="closed" value="true" />
+      <created>1772585693297</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1772585693297</updated>
+    </task>
+    <task id="LOCAL-00002" summary="initialize TaskAPI with database setup, models, routes, and requirements">
+      <option name="closed" value="true" />
+      <created>1772585721783</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1772585721783</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add unit tests for task creation and retrieval">
+      <option name="closed" value="true" />
+      <created>1772585737634</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1772585737634</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add CI/CD pipeline configuration and Docker setup">
+      <option name="closed" value="true" />
+      <created>1772585748430</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1772585748430</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add initial project configuration files for TaskAPI module" />
+    <MESSAGE value="initialize TaskAPI with database setup, models, routes, and requirements" />
+    <MESSAGE value="add unit tests for task creation and retrieval" />
+    <MESSAGE value="add CI/CD pipeline configuration and Docker setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="add CI/CD pipeline configuration and Docker setup" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

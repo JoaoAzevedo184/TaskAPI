@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+sqlalchemy
+prometheus_client
+pytest
+httpx
+pytest-cov
+flake8
+black

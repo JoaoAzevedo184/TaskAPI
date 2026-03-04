@@ -1,10 +1,62 @@
+# requirements.txt - Lista de dependências Python do projeto
+#
+# O pip lê esse arquivo para instalar tudo de uma vez:
+#   pip install -r requirements.txt
+#
+# Cada linha é um pacote que será baixado do PyPI (repositório oficial do Python).
+
+# ==================== DEPENDÊNCIAS DA APLICAÇÃO ====================
+
+# FastAPI: framework web moderno e rápido para criar APIs REST.
+# Gera documentação Swagger automática em /docs.
 fastapi
+
+# Uvicorn: servidor ASGI que roda a aplicação FastAPI.
+# [standard] instala extras como uvloop (melhor performance)
+# e httptools (parser HTTP mais rápido).
+# É o "motor" que serve as requisições HTTP.
 uvicorn[standard]
+
+# SQLModel: ORM que combina SQLAlchemy + Pydantic.
+# Permite definir modelos de banco de dados que também
+# servem como schemas de validação da API.
+# Criado pelo mesmo autor do FastAPI (Sebastián Ramírez).
 sqlmodel
+
+# SQLAlchemy: ORM/toolkit de banco de dados mais usado em Python.
+# O SQLModel usa ele por baixo dos panos.
+# Necessário como dependência explícita para garantir compatibilidade.
 sqlalchemy
+
+# prometheus_client: biblioteca oficial para expor métricas
+# no formato Prometheus. Usada no endpoint /metrics
+# para monitoramento e observabilidade da aplicação.
 prometheus_client
+
+# ==================== DEPENDÊNCIAS DE DESENVOLVIMENTO/TESTES ====================
+
+# pytest: framework de testes mais popular do Python.
+# Descobre e executa testes automaticamente (arquivos test_*.py).
 pytest
+
+# httpx: cliente HTTP moderno para Python (async e sync).
+# Necessário pelo TestClient do FastAPI para fazer
+# requisições de teste à API.
 httpx
+
+# pytest-cov: plugin do pytest que mede cobertura de código.
+# Mostra quais linhas do código foram executadas pelos testes
+# e quais ficaram sem cobertura. Gera relatórios em vários formatos.
 pytest-cov
+
+# flake8: linter de código Python.
+# Verifica se o código segue as convenções PEP 8
+# (espaçamento, tamanho de linha, imports, etc.)
+# e detecta erros comuns como variáveis não usadas.
 flake8
+
+# black: formatador automático de código Python.
+# Reformata o código inteiro para um estilo consistente.
+# Diferente do flake8 que só AVISA, o black CORRIGE automaticamente.
+# Usado no pipeline com --check (só verifica, sem alterar).
 black

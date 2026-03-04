@@ -1,196 +1,87 @@
+# TaskAPI - Desafio DevOps
 
-# 🚀 TaskAPI - DevOps Challenge (100% Criteria Aligned)
+API REST de gerenciamento de tarefas desenvolvida com FastAPI + SQLite, com pipeline CI/CD completo via GitHub Actions.
 
-Este projeto foi desenvolvido para atender **100% dos critérios exigidos no Desafio DevOps**:
+## Stack Tecnológica
 
----
+- **Backend:** Python 3.11, FastAPI, SQLModel
+- **Banco de dados:** SQLite
+- **Testes:** pytest + pytest-cov (cobertura ~99%)
+- **Lint/Format:** flake8 + black
+- **Container:** Docker multi-stage com Alpine
+- **CI/CD:** GitHub Actions
+- **Observabilidade:** Health check + métricas Prometheus
 
-# ✅ Requisitos do Desafio Atendidos
+## Pipeline CI/CD
 
-## 1️⃣ Integração Contínua (CI)
+O workflow `.github/workflows/ci-cd.yml` é acionado a cada push ou PR na branch `main`:
 
-Pipeline automatizado via **GitHub Actions** que executa a cada:
+**Job CI:** instalação de dependências, lint com flake8, verificação de formatação com black, execução de testes com cobertura mínima de 80%.
 
-- Push na branch `main`
-- Pull Request para `main`
+**Job Build & Push:** build da imagem Docker e push para o GitHub Container Registry (GHCR), executado apenas em push na main após CI verde.
 
-### Etapas da CI:
-- Instalação de dependências
-- Análise estática com `flake8`
-- Verificação de formatação com `black --check`
-- Execução de testes automatizados com `pytest`
-- Geração de relatório de cobertura com `pytest-cov`
+**Job Deploy Staging:** deploy automatizado no ambiente de staging após build bem-sucedido.
 
----
+**Job Deploy Production:** deploy para produção com aprovação manual via GitHub Environments.
 
-## 2️⃣ Cobertura de Testes
-
-- Framework: `pytest`
-- Cobertura: `pytest --cov=app`
-- Meta exigida: **≥ 80%**
-- Testes cobrem:
-  - Criação de tarefa
-  - Consulta por ID
-  - Fluxo básico do CRUD
-
----
-
-## 3️⃣ Containerização
-
-### Dockerfile Multi-Stage
-
-- Base: `python:3.11-slim`
-- Instalação otimizada sem cache
-- Exposição da porta 8000
-- Execução via `uvicorn`
-
-### Build:
-```bash
-docker build -t taskapi .
-```
-
-### Run:
-```bash
-docker run -p 8000:8000 taskapi
-```
-
----
-
-## 4️⃣ Docker Compose (Staging)
-
-Arquivo `docker-compose.yml` incluído para simular ambiente de staging.
-
-```bash
-docker-compose up --build
-```
-
----
-
-## 5️⃣ Build e Push de Imagem
-
-Pipeline executa:
-
-- Login no GitHub Container Registry (GHCR)
-- Build automático da imagem
-- Push para:
-
-```
-ghcr.io/<usuario>/<repositorio>:latest
-```
-
----
-
-## 6️⃣ Entrega Contínua (CD)
-
-Pipeline estruturado com:
-
-- Job de CI
-- Job de build e push
-- Job de deploy para staging
-- Possibilidade de deploy para produção com aprovação manual (via environment protection)
-
----
-
-## 7️⃣ Observabilidade
-
-Implementado:
-
-### Health Check
-```
-GET /health
-```
-Retorna:
-```json
-{ "status": "ok" }
-```
-
-### Métricas (Prometheus)
-```
-GET /metrics
-```
-
-Compatível com Prometheus.
-
----
-
-# 🧱 Arquitetura do Projeto
-
-```
-taskapi/
-│
-├── app/
-│   ├── main.py        # Inicialização da aplicação
-│   ├── models.py      # Modelos SQLModel
-│   ├── db.py          # Conexão e sessão com banco
-│   └── routes.py      # Endpoints REST
-│
-├── tests/
-│   └── test_tasks.py  # Testes automatizados
-│
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-├── README.md
-└── .github/workflows/ci-cd.yml
-```
-
----
-
-# 📡 Endpoints da API
+## Endpoints da API
 
 | Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| POST   | /tasks | Criar tarefa |
-| GET    | /tasks | Listar tarefas |
-| GET    | /tasks/{id} | Buscar por ID |
-| PUT    | /tasks/{id} | Atualizar |
+|--------|----------|-----------:|
+| POST | /tasks | Criar tarefa |
+| GET | /tasks | Listar tarefas |
+| GET | /tasks/{id} | Buscar por ID |
+| PUT | /tasks/{id} | Atualizar |
 | DELETE | /tasks/{id} | Deletar |
-| GET    | /health | Verificação de status |
-| GET    | /metrics | Métricas Prometheus |
+| GET | /health | Status da aplicação |
+| GET | /metrics | Métricas Prometheus |
 
----
-
-# ▶️ Execução Local
+## Execução Local
 
 ```bash
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Swagger disponível em:
+Swagger: http://localhost:8000/docs
+
+## Docker
+
+```bash
+# Build
+docker build -t taskapi .
+
+# Run
+docker run -p 8000:8000 taskapi
+
+# Ou via Docker Compose
+docker compose up --build
 ```
-http://localhost:8000/docs
+
+## Testes
+
+```bash
+pytest --cov=app --cov-report=term-missing --cov-fail-under=80
 ```
 
----
+## Estrutura do Projeto
 
-# 🎯 Objetivo Técnico Demonstrado
-
-Este projeto comprova conhecimento em:
-
-- Automação de pipelines CI/CD
-- Testes automatizados com cobertura
-- Análise estática de código
-- Docker multi-stage
-- Registro e publicação de imagens
-- Deploy automatizado
-- Observabilidade básica
-- Organização de projeto backend
-
----
-
-# 📌 Conclusão
-
-A aplicação está totalmente alinhada com os critérios exigidos no desafio:
-
-✔ CI funcional  
-✔ Cobertura ≥ 80%  
-✔ Docker otimizado  
-✔ Build e push automatizados  
-✔ Deploy estruturado  
-✔ Observabilidade implementada  
-✔ Documentação clara  
-
----
-
-Projeto desenvolvido para fins acadêmicos e prática avançada de DevOps.
+```
+taskapi/
+├── app/
+│   ├── main.py          # App FastAPI + health/metrics
+│   ├── models.py         # Modelo Task (SQLModel)
+│   ├── db.py             # Engine e sessão SQLite
+│   └── routes.py         # Endpoints CRUD
+├── tests/
+│   ├── conftest.py       # Setup do banco para testes
+│   └── test_tasks.py     # 10 testes automatizados
+├── .github/workflows/
+│   └── ci-cd.yml         # Pipeline CI/CD
+├── Dockerfile            # Multi-stage Alpine
+├── docker-compose.yml    # Ambiente staging
+├── .flake8               # Configuração do linter
+├── .dockerignore
+├── .gitignore
+└── requirements.txt
+```

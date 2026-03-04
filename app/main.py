@@ -6,15 +6,19 @@ from .routes import router
 
 app = FastAPI(title="TaskAPI")
 
+
 @app.on_event("startup")
 def on_startup():
     init_db()
 
+
 app.include_router(router)
+
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
 
 @app.get("/metrics")
 def metrics():

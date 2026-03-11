@@ -1,9 +1,4 @@
 # requirements.txt - Lista de dependências Python do projeto
-#
-# O pip lê esse arquivo para instalar tudo de uma vez:
-#   pip install -r requirements.txt
-#
-# Cada linha é um pacote que será baixado do PyPI (repositório oficial do Python).
 
 # ==================== DEPENDÊNCIAS DA APLICAÇÃO ====================
 

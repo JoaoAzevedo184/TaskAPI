@@ -206,3 +206,4 @@ def test_delete_task_not_found():
 
     # Verifica se retornou 404 (Not Found)
     assert res.status_code == 404
+

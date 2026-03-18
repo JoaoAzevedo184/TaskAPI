@@ -1,0 +1,4 @@
+cat > pyproject.toml << 'EOF'
+[tool.black]
+line-length = 79
+EOF

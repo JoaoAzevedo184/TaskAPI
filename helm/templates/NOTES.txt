@@ -1,0 +1,42 @@
+=====================================================
+  TaskAPI - Deploy Realizado com Sucesso! 🚀
+=====================================================
+
+  Ambiente: {{ .Values.environment | upper }}
+  Réplicas: {{ .Values.replicaCount }}
+  Versão:   {{ .Values.image.tag | default .Chart.AppVersion }}
+
+-----------------------------------------------------
+  COMO ACESSAR:
+-----------------------------------------------------
+
+{{- if .Values.nodePort.enabled }}
+  Via NodePort (Kind):
+    http://localhost:{{ .Values.nodePort.port }}
+    http://localhost:{{ .Values.nodePort.port }}/docs  (Swagger UI)
+{{- end }}
+
+{{- if .Values.ingress.enabled }}
+  Via Ingress:
+    http://{{ .Values.ingress.host }}
+    (Adicione "127.0.0.1 {{ .Values.ingress.host }}" ao /etc/hosts)
+{{- end }}
+
+  Via Port-Forward:
+    kubectl port-forward svc/{{ include "taskapi.fullname" . }} 8000:{{ .Values.service.port }}
+    http://localhost:8000/docs
+
+-----------------------------------------------------
+  COMANDOS ÚTEIS:
+-----------------------------------------------------
+
+  # Ver status dos pods
+  kubectl get pods -l app.kubernetes.io/instance={{ .Release.Name }}
+
+  # Ver logs
+  kubectl logs -l app.kubernetes.io/instance={{ .Release.Name }} -f
+
+  # Rollback para versão anterior
+  helm rollback {{ .Release.Name }}
+
+=====================================================

@@ -1,0 +1,52 @@
+# ============================================================
+# Ambiente: STAGING
+# ============================================================
+# Foco: simular produção, testes de integração, validação
+# Deploy: helm upgrade --install taskapi-stg ./taskapi -f ./taskapi/environments/values-staging.yaml
+# ============================================================
+
+environment: staging
+
+replicaCount: 2
+
+image:
+  tag: "latest"
+  pullPolicy: Never
+
+resources:
+  requests:
+    cpu: 150m
+    memory: 192Mi
+  limits:
+    cpu: 400m
+    memory: 384Mi
+
+config:
+  APP_NAME: "TaskAPI"
+  APP_ENV: "staging"
+  LOG_LEVEL: "WARNING"
+  DATABASE_URL: "sqlite:///./data/tasks.db"
+
+autoscaling:
+  enabled: false
+
+persistence:
+  enabled: true
+  size: 1Gi
+  mountPath: /app/data
+
+ingress:
+  enabled: true
+  className: nginx
+  host: taskapi-staging.local
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+nodePort:
+  enabled: true
+  port: 30081
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000

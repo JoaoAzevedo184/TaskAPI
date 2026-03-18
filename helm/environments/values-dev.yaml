@@ -1,0 +1,46 @@
+# ============================================================
+# Ambiente: DEVELOPMENT
+# ============================================================
+# Foco: iteração rápida, debug habilitado, recursos mínimos
+# Deploy: helm upgrade --install taskapi-dev ./taskapi -f ./taskapi/environments/values-dev.yaml
+# ============================================================
+
+environment: dev
+
+replicaCount: 1
+
+image:
+  tag: "latest"
+  pullPolicy: Never
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi
+
+config:
+  APP_NAME: "TaskAPI"
+  APP_ENV: "development"
+  LOG_LEVEL: "DEBUG"
+  DATABASE_URL: "sqlite:///./tasks.db"
+
+autoscaling:
+  enabled: false
+
+persistence:
+  enabled: false
+
+ingress:
+  enabled: false
+
+nodePort:
+  enabled: true
+  port: 30080
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000

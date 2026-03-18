@@ -1,0 +1,95 @@
+# ============================================================
+# TaskAPI Helm Chart - Valores Padrão
+# ============================================================
+# Estes são os valores base. Cada ambiente (dev, staging, prod)
+# sobrescreve apenas o que precisa via values-<env>.yaml
+# ============================================================
+
+# --- Metadata ---
+environment: dev
+nameOverride: ""
+fullnameOverride: ""
+
+# --- Imagem da Aplicação ---
+image:
+  repository: taskapi
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+# --- Réplicas e Deploy ---
+replicaCount: 1
+
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+# --- Container ---
+containerPort: 8000
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi
+
+# --- Health Checks ---
+livenessProbe:
+  enabled: true
+  path: /docs
+  initialDelaySeconds: 10
+  periodSeconds: 30
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  enabled: true
+  path: /docs
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# --- Service ---
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+# --- Ingress ---
+ingress:
+  enabled: false
+  className: nginx
+  host: taskapi.local
+  annotations: {}
+
+# --- ConfigMap ---
+config:
+  APP_NAME: "TaskAPI"
+  APP_ENV: "development"
+  LOG_LEVEL: "DEBUG"
+  DATABASE_URL: "sqlite:///./tasks.db"
+
+# --- Autoscaling (HPA) ---
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# --- Persistência (SQLite) ---
+persistence:
+  enabled: false
+  size: 1Gi
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  mountPath: /app/data
+
+# --- NodePort para acesso local no Kind ---
+nodePort:
+  enabled: true
+  port: 30080

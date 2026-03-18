@@ -1,0 +1,63 @@
+# ============================================================
+# Ambiente: PRODUCTION
+# ============================================================
+# Foco: estabilidade, alta disponibilidade, recursos adequados
+# Deploy: helm upgrade --install taskapi-prod ./taskapi -f ./taskapi/environments/values-production.yaml
+# ============================================================
+
+environment: production
+
+replicaCount: 3
+
+image:
+  tag: "latest"
+  pullPolicy: Never
+
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+config:
+  APP_NAME: "TaskAPI"
+  APP_ENV: "production"
+  LOG_LEVEL: "ERROR"
+  DATABASE_URL: "sqlite:///./data/tasks.db"
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+persistence:
+  enabled: true
+  size: 2Gi
+  mountPath: /app/data
+
+ingress:
+  enabled: true
+  className: nginx
+  host: taskapi.local
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rate-limit: "10"
+
+nodePort:
+  enabled: true
+  port: 30082
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000

@@ -23,13 +23,13 @@ jobs:
           pip install -r requirements.txt
           pip install black flake8 pytest pytest-cov
 
+      - name: Format (auto fix)
+        run: |
+          black --check .
+
       - name: Lint
         run: |
           flake8 .
-
-      - name: Format check
-        run: |
-          black --check .
 
       - name: Run tests
         run: |

@@ -1,4 +1,3 @@
-cat > pyproject.toml << 'EOF'
 [tool.black]
-line-length = 79
-EOF
+line-length = 88
+target-version = ["py311"]

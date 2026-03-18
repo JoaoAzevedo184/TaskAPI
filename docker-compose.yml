@@ -3,64 +3,19 @@
 # Define como os containers da aplicação devem ser criados e configurados.
 # Para subir o ambiente: docker compose up --build
 # Para derrubar:         docker compose down
-
-# Nome do projeto Docker Compose.
-# Sem isso, o Docker usa o nome da pasta como prefixo dos containers.
 name: taskapi-devops
 
-# Lista de serviços (containers) que compõem a aplicação
 services:
-
-  # Serviço principal: a API web
   web:
-
-    # build: . → constrói a imagem Docker a partir do Dockerfile
-    # que está no diretório atual (.)
     build: .
-
-    # Mapeia a porta 8000 do container para a porta 8000 da máquina host.
-    # Formato: "PORTA_HOST:PORTA_CONTAINER"
-    # Após subir, a API fica acessível em http://localhost:8000
     ports:
       - "8000:8000"
-
-    # Variáveis de ambiente passadas para dentro do container.
-    # PYTHONUNBUFFERED=1 faz o Python não armazenar output em buffer,
-    # garantindo que os logs apareçam em tempo real no terminal.
-    # Sem isso, os prints/logs podem demorar para aparecer.
     environment:
       - PYTHONUNBUFFERED=1
-
-    # Healthcheck: verificação periódica de saúde do container.
-    # O Docker executa esse comando dentro do container para saber
-    # se a aplicação está funcionando corretamente.
     healthcheck:
-
-      # O comando que o Docker executa para verificar a saúde.
-      # Usa Python puro (sem instalar curl/wget) para fazer uma
-      # requisição HTTP ao endpoint /health da própria aplicação.
-      # Se retornar 200, o container é considerado "healthy".
-      # Se falhar, é marcado como "unhealthy".
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
-
-      # interval: de quanto em quanto tempo o healthcheck roda
       interval: 30s
-
-      # timeout: tempo máximo que o healthcheck espera por resposta
-      # Se passar de 10s sem resposta, considera como falha
       timeout: 10s
-
-      # retries: quantas falhas consecutivas antes de marcar como "unhealthy"
-      # 3 falhas seguidas = container unhealthy
       retries: 3
-
-      # start_period: tempo de "aquecimento" após o container iniciar.
-      # Durante esse período, falhas no healthcheck são ignoradas,
-      # dando tempo para a aplicação subir e ficar pronta.
       start_period: 10s
-
-    # Política de reinício do container.
-    # unless-stopped: reinicia automaticamente se o container crashar,
-    # EXCETO se você parou manualmente com docker compose down.
-    # Útil para manter a aplicação rodando em caso de erro inesperado.
     restart: unless-stopped

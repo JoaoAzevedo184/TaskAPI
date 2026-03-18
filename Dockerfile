@@ -10,8 +10,8 @@ WORKDIR /app
 COPY --from=build /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=build /usr/local/bin/uvicorn /usr/local/bin/uvicorn
 COPY . .
+RUN adduser -D appuser && chown -R appuser:appuser /app
+USER appuser
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
-RUN adduser -D appuser 
-USER appuser

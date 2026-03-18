@@ -6,4 +6,3 @@ from app.db import init_db
 def setup_db():
     """Ensure database tables exist before each test."""
     init_db()
-

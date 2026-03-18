@@ -1,0 +1,27 @@
+# ============================================================
+# Kind Cluster - Configuração para TaskAPI
+# ============================================================
+# Mapeia NodePorts para acesso local:
+#   Dev:        localhost:30080
+#   Staging:    localhost:30081
+#   Production: localhost:30082
+# ============================================================
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: taskapi-cluster
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      # Dev environment
+      - containerPort: 30080
+        hostPort: 30080
+        protocol: TCP
+      # Staging environment
+      - containerPort: 30081
+        hostPort: 30081
+        protocol: TCP
+      # Production environment
+      - containerPort: 30082
+        hostPort: 30082
+        protocol: TCP

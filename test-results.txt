@@ -1,0 +1,304 @@
+
+==========================================
+  TaskAPI - Testes de Upgrade & Rollback
+==========================================
+
+[1;33m[TEST][0m TESTE 1: Estado inicial dos releases
+--------------------------------------
+NAME        	NAMESPACE      	REVISION	UPDATED                                	STATUS  	CHART        	APP VERSION
+taskapi-dev 	taskapi-dev    	8       	2026-03-17 22:23:36.262527776 -0300 -03	deployed	taskapi-1.0.0	1.0.0      
+taskapi-prod	taskapi-prod   	1       	2026-03-17 22:10:39.734920006 -0300 -03	deployed	taskapi-1.0.0	1.0.0      
+taskapi-stg 	taskapi-staging	1       	2026-03-17 21:52:30.04289967 -0300 -03 	deployed	taskapi-1.0.0	1.0.0      
+
+[1;33m[TEST][0m Histórico do release dev:
+REVISION	UPDATED                 	STATUS    	CHART        	APP VERSION	DESCRIPTION     
+1       	Tue Mar 17 21:51:28 2026	superseded	taskapi-1.0.0	1.0.0      	Install complete
+2       	Tue Mar 17 21:52:29 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+3       	Tue Mar 17 22:21:45 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+4       	Tue Mar 17 22:22:06 2026	superseded	taskapi-1.0.0	1.0.0      	Rollback to 2   
+5       	Tue Mar 17 22:22:37 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+6       	Tue Mar 17 22:22:58 2026	superseded	taskapi-1.0.0	1.0.0      	Rollback to 4   
+7       	Tue Mar 17 22:23:05 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+8       	Tue Mar 17 22:23:36 2026	deployed  	taskapi-1.0.0	1.0.0      	Rollback to 6   
+
+[1;33m[TEST][0m TESTE 2: Upgrade do dev (mudando LOG_LEVEL para INFO)
+--------------------------------------
+Release "taskapi-dev" has been upgraded. Happy Helming!
+NAME: taskapi-dev
+LAST DEPLOYED: Tue Mar 17 22:27:43 2026
+NAMESPACE: taskapi-dev
+STATUS: deployed
+REVISION: 9
+TEST SUITE: None
+NOTES:
+=====================================================
+  TaskAPI - Deploy Realizado com Sucesso! 🚀
+=====================================================
+
+  Ambiente: DEV
+  Réplicas: 1
+  Versão:   latest
+
+-----------------------------------------------------
+  COMO ACESSAR:
+-----------------------------------------------------
+  Via NodePort (Kind):
+    http://localhost:30080
+    http://localhost:30080/docs  (Swagger UI)
+
+  Via Port-Forward:
+    kubectl port-forward svc/taskapi-dev 8000:80
+    http://localhost:8000/docs
+
+-----------------------------------------------------
+  COMANDOS ÚTEIS:
+-----------------------------------------------------
+
+  # Ver status dos pods
+  kubectl get pods -l app.kubernetes.io/instance=taskapi-dev
+
+  # Ver logs
+  kubectl logs -l app.kubernetes.io/instance=taskapi-dev -f
+
+  # Rollback para versão anterior
+  helm rollback taskapi-dev
+
+=====================================================
+[0;36m[INFO][0m Aguardando rollout...
+Waiting for deployment "taskapi-dev" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "taskapi-dev" rollout to finish: 1 old replicas are pending termination...
+deployment "taskapi-dev" successfully rolled out
+[0;32m[OK][0m Upgrade realizado!
+
+[0;36m[INFO][0m Verificando novo ConfigMap:
+    LOG_LEVEL: INFO
+
+[1;33m[TEST][0m Histórico após upgrade:
+REVISION	UPDATED                 	STATUS    	CHART        	APP VERSION	DESCRIPTION     
+1       	Tue Mar 17 21:51:28 2026	superseded	taskapi-1.0.0	1.0.0      	Install complete
+2       	Tue Mar 17 21:52:29 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+3       	Tue Mar 17 22:21:45 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+4       	Tue Mar 17 22:22:06 2026	superseded	taskapi-1.0.0	1.0.0      	Rollback to 2   
+5       	Tue Mar 17 22:22:37 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+6       	Tue Mar 17 22:22:58 2026	superseded	taskapi-1.0.0	1.0.0      	Rollback to 4   
+7       	Tue Mar 17 22:23:05 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+8       	Tue Mar 17 22:23:36 2026	superseded	taskapi-1.0.0	1.0.0      	Rollback to 6   
+9       	Tue Mar 17 22:27:43 2026	deployed  	taskapi-1.0.0	1.0.0      	Upgrade complete
+
+[1;33m[TEST][0m TESTE 3: Rollback do dev para revisão anterior
+--------------------------------------
+Rollback was a success! Happy Helming!
+[0;36m[INFO][0m Aguardando rollout...
+Waiting for deployment "taskapi-dev" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "taskapi-dev" rollout to finish: 1 old replicas are pending termination...
+deployment "taskapi-dev" successfully rolled out
+[0;32m[OK][0m Rollback realizado!
+
+[0;36m[INFO][0m Verificando ConfigMap restaurado:
+    LOG_LEVEL: DEBUG
+
+[1;33m[TEST][0m Histórico após rollback:
+REVISION	UPDATED                 	STATUS    	CHART        	APP VERSION	DESCRIPTION     
+1       	Tue Mar 17 21:51:28 2026	superseded	taskapi-1.0.0	1.0.0      	Install complete
+2       	Tue Mar 17 21:52:29 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+3       	Tue Mar 17 22:21:45 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+4       	Tue Mar 17 22:22:06 2026	superseded	taskapi-1.0.0	1.0.0      	Rollback to 2   
+5       	Tue Mar 17 22:22:37 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+6       	Tue Mar 17 22:22:58 2026	superseded	taskapi-1.0.0	1.0.0      	Rollback to 4   
+7       	Tue Mar 17 22:23:05 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+8       	Tue Mar 17 22:23:36 2026	superseded	taskapi-1.0.0	1.0.0      	Rollback to 6   
+9       	Tue Mar 17 22:27:43 2026	superseded	taskapi-1.0.0	1.0.0      	Upgrade complete
+10      	Tue Mar 17 22:28:14 2026	deployed  	taskapi-1.0.0	1.0.0      	Rollback to 8   
+
+[1;33m[TEST][0m TESTE 4: Scaling do dev (1 → 3 réplicas)
+--------------------------------------
+Release "taskapi-dev" has been upgraded. Happy Helming!
+NAME: taskapi-dev
+LAST DEPLOYED: Tue Mar 17 22:28:35 2026
+NAMESPACE: taskapi-dev
+STATUS: deployed
+REVISION: 11
+TEST SUITE: None
+NOTES:
+=====================================================
+  TaskAPI - Deploy Realizado com Sucesso! 🚀
+=====================================================
+
+  Ambiente: DEV
+  Réplicas: 3
+  Versão:   latest
+
+-----------------------------------------------------
+  COMO ACESSAR:
+-----------------------------------------------------
+  Via NodePort (Kind):
+    http://localhost:30080
+    http://localhost:30080/docs  (Swagger UI)
+
+  Via Port-Forward:
+    kubectl port-forward svc/taskapi-dev 8000:80
+    http://localhost:8000/docs
+
+-----------------------------------------------------
+  COMANDOS ÚTEIS:
+-----------------------------------------------------
+
+  # Ver status dos pods
+  kubectl get pods -l app.kubernetes.io/instance=taskapi-dev
+
+  # Ver logs
+  kubectl logs -l app.kubernetes.io/instance=taskapi-dev -f
+
+  # Rollback para versão anterior
+  helm rollback taskapi-dev
+
+=====================================================
+[0;36m[INFO][0m Aguardando 3 pods...
+Waiting for deployment "taskapi-dev" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "taskapi-dev" rollout to finish: 2 of 3 updated replicas are available...
+deployment "taskapi-dev" successfully rolled out
+NAME                           READY   STATUS    RESTARTS   AGE
+taskapi-dev-7bcc97964f-7mpkk   1/1     Running   0          21s
+taskapi-dev-7bcc97964f-ctrwj   1/1     Running   0          42s
+taskapi-dev-7bcc97964f-qsb7x   1/1     Running   0          21s
+
+[0;32m[OK][0m Scaling OK — 3 pods rodando
+[0;36m[INFO][0m Revertendo para 1 réplica...
+Rollback was a success! Happy Helming!
+deployment "taskapi-dev" successfully rolled out
+[0;32m[OK][0m Revertido para 1 réplica
+
+[1;33m[TEST][0m TESTE 5: Upgrade de versão da imagem (tag v2.0.0)
+--------------------------------------
+[0;36m[INFO][0m Taggeando imagem como v2.0.0...
+Image: "taskapi:v2.0.0" with ID "sha256:858bccb9b95ab7577a2068cbd4d1f962d4bccf399e4efe11d6195237af09cfb0" not yet present on node "taskapi-cluster-control-plane", loading...
+Release "taskapi-dev" has been upgraded. Happy Helming!
+NAME: taskapi-dev
+LAST DEPLOYED: Tue Mar 17 22:29:02 2026
+NAMESPACE: taskapi-dev
+STATUS: deployed
+REVISION: 13
+TEST SUITE: None
+NOTES:
+=====================================================
+  TaskAPI - Deploy Realizado com Sucesso! 🚀
+=====================================================
+
+  Ambiente: DEV
+  Réplicas: 1
+  Versão:   v2.0.0
+
+-----------------------------------------------------
+  COMO ACESSAR:
+-----------------------------------------------------
+  Via NodePort (Kind):
+    http://localhost:30080
+    http://localhost:30080/docs  (Swagger UI)
+
+  Via Port-Forward:
+    kubectl port-forward svc/taskapi-dev 8000:80
+    http://localhost:8000/docs
+
+-----------------------------------------------------
+  COMANDOS ÚTEIS:
+-----------------------------------------------------
+
+  # Ver status dos pods
+  kubectl get pods -l app.kubernetes.io/instance=taskapi-dev
+
+  # Ver logs
+  kubectl logs -l app.kubernetes.io/instance=taskapi-dev -f
+
+  # Rollback para versão anterior
+  helm rollback taskapi-dev
+
+=====================================================
+Waiting for deployment "taskapi-dev" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "taskapi-dev" rollout to finish: 1 old replicas are pending termination...
+deployment "taskapi-dev" successfully rolled out
+[0;32m[OK][0m Deploy com v2.0.0!
+[0;36m[INFO][0m Verificando imagem do pod:
+taskapi:latest
+
+[0;36m[INFO][0m Rollback para latest...
+Rollback was a success! Happy Helming!
+Waiting for deployment "taskapi-dev" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "taskapi-dev" rollout to finish: 1 old replicas are pending termination...
+deployment "taskapi-dev" successfully rolled out
+[0;32m[OK][0m Revertido para latest
+
+[1;33m[TEST][0m TESTE 6: Validação com helm lint
+--------------------------------------
+==> Linting ./helm
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+==> Linting ./helm
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+==> Linting ./helm
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+==> Linting ./helm
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+[0;32m[OK][0m Lint passou em todos os ambientes!
+
+[1;33m[TEST][0m TESTE 7: Recursos Kubernetes por ambiente
+--------------------------------------
+
+[0;36m[INFO][0m Namespace: taskapi-dev
+  Pods:
+    taskapi-dev-7bcc97964f-zsdwb   1/1   Running       0     31s
+    taskapi-dev-7f974cb97b-wmjm9   1/1   Terminating   0     62s
+  Services:
+    taskapi-dev            ClusterIP   10.96.173.39    <none>   80/TCP         38m
+    taskapi-dev-nodeport   NodePort    10.96.214.104   <none>   80:30080/TCP   38m
+  ConfigMaps:
+    kube-root-ca.crt     1     51m
+    taskapi-dev-config   4     38m
+
+[0;36m[INFO][0m Namespace: taskapi-staging
+  Pods:
+    taskapi-stg-6db675bb55-kphsl   1/1   Running   0     37m
+    taskapi-stg-6db675bb55-l2wmn   1/1   Running   0     37m
+  Services:
+    taskapi-stg            ClusterIP   10.96.220.5     <none>   80/TCP         37m
+    taskapi-stg-nodeport   NodePort    10.96.198.203   <none>   80:30081/TCP   37m
+  ConfigMaps:
+    kube-root-ca.crt     1     37m
+    taskapi-stg-config   4     37m
+  PVC:
+    taskapi-stg-data   Bound   pvc-c8f0de86-4cea-4161-898c-e0d1f94e3c96   1Gi   RWO   standard   <unset>   37m
+
+[0;36m[INFO][0m Namespace: taskapi-prod
+  Pods:
+    taskapi-prod-5f84844fff-mwpzt   1/1   Running   0     19m
+    taskapi-prod-5f84844fff-rqccw   1/1   Running   0     19m
+  Services:
+    taskapi-prod            ClusterIP   10.96.86.3      <none>   80/TCP         19m
+    taskapi-prod-nodeport   NodePort    10.96.154.245   <none>   80:30082/TCP   19m
+  ConfigMaps:
+    kube-root-ca.crt      1     37m
+    taskapi-prod-config   4     19m
+  PVC:
+    taskapi-prod-data   Bound   pvc-ee71b3e4-14f0-435a-b955-b170d5255411   2Gi   RWO   standard   <unset>   19m
+  HPA:
+    taskapi-prod   Deployment/taskapi-prod   cpu: <unknown>/70%, memory: <unknown>/80%   2     5     2     19m
+
+[1;33m[TEST][0m TESTE 8: Teste HTTP em todos os ambientes
+--------------------------------------
+[0;32m[OK][0m dev → http://localhost:30080/docs → HTTP 200
+[0;32m[OK][0m staging → http://localhost:30081/docs → HTTP 200
+[0;32m[OK][0m production → http://localhost:30082/docs → HTTP 200
+
+==========================================
+  [0;32mTodos os testes concluídos![0m
+==========================================
+
+  Dica: salve a saída como evidência:
+  ./test-upgrade-rollback.sh 2>&1 | tee test-results.txt
+

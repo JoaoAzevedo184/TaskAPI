@@ -138,9 +138,7 @@ def test_update_task():
     e verifica se os novos valores foram persistidos.
     """
     # Cria uma tarefa com título "Before Update"
-    create = client.post(
-        "/tasks", json={"title": "Before Update", "done": False}
-    )
+    create = client.post("/tasks", json={"title": "Before Update", "done": False})
     task_id = create.json()["id"]
 
     # Atualiza a tarefa com novos valores
@@ -179,9 +177,7 @@ def test_delete_task():
     para confirmar que foi realmente removida do banco.
     """
     # Cria uma tarefa para ser deletada
-    create = client.post(
-        "/tasks", json={"title": "To Delete", "done": False}
-    )
+    create = client.post("/tasks", json={"title": "To Delete", "done": False})
     task_id = create.json()["id"]
 
     # Deleta a tarefa
